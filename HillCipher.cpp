@@ -159,3 +159,67 @@ vector<vector<int>> inverse(vector<vector<int>> A,int n)
    }
 	return inv;
 }
+string encrypt(string pt, int n)
+{
+    int ptIter = 0  ;
+
+    int row = (pt.length())/n; 
+    vector<vector<int>> P(row,vector<int>(n)); 
+
+    for(int i=0; i<row ; i++)
+    {
+        for(int j=0; j<n; j++)
+        {
+            P[i][j] = pt[ptIter++]-'a' ;
+        }
+    }
+
+    vector<vector<int>> C;    
+    C=multiplyMatrices(P, row , n, key,n , n);
+
+    string ct = "" ;
+    for(int i=0 ; i<row ; i++)
+    {
+        for(int j=0 ; j<n ;j++)
+        {
+            ct += (C[i][j] + 'a');
+        }
+    }
+    return ct ;
+}
+
+
+string decrypt(string ct, int n)
+{
+    int ctIter = 0 ;
+
+    int row = ct.length()/n;
+    vector<vector<int>> C (row,vector<int>(n)); 
+
+    for(int i=0; i<row ; i++)
+    {
+        for(int j=0; j<n; j++)
+        {
+            C[i][j] = ct[ctIter++]-'a' ;
+        }
+    }
+    vector<vector<int>> P ;
+
+    vector<vector<int>> inv (n,vector<int>(n));
+    inv=inverse(key, n);
+
+    P=multiplyMatrices(C, row , n, inv,n , n) ;
+    string pt = "" ;
+    for(int i = 0 ; i<row ; i++)
+    {
+        for(int j=0 ; j<n ; j++)
+        {
+            pt += (P[i][j] + 'a');
+        }
+    }
+    return pt ;
+}
+
+string pt;
+string ct;
+string dt;
