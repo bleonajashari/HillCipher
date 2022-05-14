@@ -223,3 +223,62 @@ string decrypt(string ct, int n)
 string pt;
 string ct;
 string dt;
+
+string opsionA(string &pt, string &ct, string &dt){
+
+    cout << "Enter the text to be encrypted : " ;
+	    getline(cin,pt);
+        int n=2;
+        for (int i = 2; i < 10; ++i)
+        {
+            if(pt.length()%i==0)
+            {
+                n=i;
+                break;
+            }
+        }
+        generatekey(n);
+        cout<<"\nThe Key matrix used is :\n";
+        for(int i=0; i<n; i++) {
+            for(int j=0; j<n; j++) {
+                cout<<key[i][j]<<' ';
+            }
+            cout<<'\n';
+        }
+
+        cout << "\nOriginal text  : " << pt << endl;
+
+        ct = encrypt(pt, n) ;
+        cout << "Encrypted text : " << ct << endl;
+        return ct;
+}
+
+string opsionB(string &dt){
+
+    cout << "Enter the text to be decrypted : " ;
+	    getline(cin,ct);
+        int n=2;
+        for (int i = 2; i < 10; ++i)
+        {
+            if(ct.length()%i==0)
+            {
+                n=i;
+                break;
+            }
+        }
+
+        cout<<"\nThe Key matrix used is :\n";
+        for(int i=0; i<n; i++) {
+            for(int j=0; j<n; j++) {
+                cout<<key[i][j]<<' ';
+            }
+            cout<<'\n';
+        }
+
+        cout << "\nOriginal text  : " << ct << endl;
+
+        dt = decrypt(ct, n);
+        cout << "Decrypted text : " << dt << "\n" << endl;
+        return 0;
+}
+
