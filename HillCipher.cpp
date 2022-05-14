@@ -95,3 +95,67 @@ int findDetInverse(int R , int D = 26)
    if (i == 1) return 1;
    else return p[i] = mod26(p[i-2] - p[i-1]*q[i-2]) ;
 }
+
+vector<vector<int>> multiplyMatrices(vector<vector<int>> a , int a_rows , int a_cols , vector<vector<int>> b, int b_rows , int b_cols)
+{
+	vector<vector<int>> res(a_rows,vector<int>(b_cols));
+	for(int i=0 ; i < a_rows ; i++)
+   {
+      for(int j=0 ; j < b_cols ; j++)
+      {
+         for(int k=0 ; k < b_rows ; k++)
+         {
+            res[i][j] += a[i][k]*b[k][j] ;
+         }
+         res[i][j] = mod26(res[i][j]) ;
+      }
+   }
+   return res;
+}
+
+vector<vector<int>> adjoint(vector<vector<int>> A,int n)
+{
+	vector<vector<int>> adj(n,vector<int>(n));
+
+	if (n == 1)
+	{
+		adj[0][0] = 1;
+		return adj;
+	}
+
+	int sign = 1;
+	vector<vector<int>> temp(n,vector<int>(n));
+
+	for (int i=0; i<n; i++)
+	{
+		for (int j=0; j<n; j++)
+		{
+			temp=getCofactor(A, i, j, n);
+
+			sign = ((i+j)%2==0)? 1: -1;
+
+			adj[j][i] = (sign)*(determinantOfMatrix(temp, n-1));
+		}
+	}
+	return adj;
+}
+
+
+vector<vector<int>> inverse(vector<vector<int>> A,int n)
+{
+	vector<vector<int>> inv(n,vector<int>(n));
+	int det=determinantOfMatrix(A,n);
+	int detInverse=findDetInverse(det);
+
+	vector<vector<int>> adj(n,vector<int>(n));
+	adj=adjoint(A, n);
+	
+	for(int i=0; i<n ; i++)
+   {
+      for(int j=0; j<n ; j++)
+      {
+         inv[i][j] = mod26(adj[i][j] * detInverse) ;
+      }
+   }
+	return inv;
+}
